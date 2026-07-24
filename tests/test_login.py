@@ -6,10 +6,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from locators import *
-from conftest import URL
-
-EMAIL = "amanbek_bekbolat_49_33@yandex.ru"
-PASSWORD = "513937иуЛфв"
+from data import EMAIL, PASSWORD, URL
 
 class TestLogin:
 

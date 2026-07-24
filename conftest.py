@@ -1,20 +1,12 @@
 import pytest
-import random
-import string
 from selenium import webdriver
-
-URL = "https://stellarburgers.education-services.ru"
-
-def generate_email():
-    random_digits = str(random.randint(10000, 99999))
-    return f"bekbolat_test_{random_digits}@yandex.ru"
-
-def generate_password():
-    return "Test" + "".join(random.choices(string.digits, k=6))
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from helpers import generate_email, generate_password
 
 @pytest.fixture
 def driver():
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.maximize_window()
     yield driver
     driver.quit()
