@@ -1,47 +1,45 @@
-import pytest
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import sys
-import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from locators import *
-from data import EMAIL, PASSWORD, URL
+from helpers import register_user, login_user
+from locators import MainPageLocators, RegisterPageLocators
+from urls import BASE_URL, REGISTER_URL, FORGOT_PASSWORD_URL
 
-class TestLogin:
+def test_login_from_main_page(driver):
+    email, password = register_user(driver)
+    driver.get(BASE_URL)
+    driver.find_element(*MainPageLocators.LOGIN_BUTTON).click()
+    login_user(driver, email, password)
+    WebDriverWait(driver, 10).until(
+        EC.url_to_be(BASE_URL + "/")
+    )
+    assert driver.current_url == BASE_URL + "/"
 
-    def test_login_via_main_button(self, driver):
-        driver.get(URL)
-        driver.find_element(By.CSS_SELECTOR, LOGIN_BUTTON_MAIN).click()
-        driver.find_element(By.XPATH, LOGIN_EMAIL_FIELD).send_keys(EMAIL)
-        driver.find_element(By.XPATH, LOGIN_PASSWORD_FIELD).send_keys(PASSWORD)
-        driver.find_element(By.CSS_SELECTOR, LOGIN_SUBMIT_BUTTON).click()
-        WebDriverWait(driver, 5).until(EC.url_to_be(f"{URL}/"))
-        assert driver.current_url == f"{URL}/"
+def test_login_from_personal_account(driver):
+    email, password = register_user(driver)
+    driver.get(BASE_URL)
+    driver.find_element(*MainPageLocators.PERSONAL_ACCOUNT_BUTTON).click()
+    login_user(driver, email, password)
+    WebDriverWait(driver, 10).until(
+        EC.url_to_be(BASE_URL + "/")
+    )
+    assert driver.current_url == BASE_URL + "/"
 
-    def test_login_via_personal_account(self, driver):
-        driver.get(URL)
-        driver.find_element(By.XPATH, PERSONAL_ACCOUNT_LINK).click()
-        driver.find_element(By.XPATH, LOGIN_EMAIL_FIELD).send_keys(EMAIL)
-        driver.find_element(By.XPATH, LOGIN_PASSWORD_FIELD).send_keys(PASSWORD)
-        driver.find_element(By.CSS_SELECTOR, LOGIN_SUBMIT_BUTTON).click()
-        WebDriverWait(driver, 5).until(EC.url_to_be(f"{URL}/"))
-        assert driver.current_url == f"{URL}/"
+def test_login_from_registration_form(driver):
+    email, password = register_user(driver)
+    driver.get(REGISTER_URL)
+    driver.find_element(*RegisterPageLocators.LOGIN_LINK).click()
+    login_user(driver, email, password)
+    WebDriverWait(driver, 10).until(
+        EC.url_to_be(BASE_URL + "/")
+    )
+    assert driver.current_url == BASE_URL + "/"
 
-    def test_login_via_register_link(self, driver):
-        driver.get(f"{URL}/register")
-        driver.find_element(By.XPATH, REGISTER_LOGIN_LINK).click()
-        driver.find_element(By.XPATH, LOGIN_EMAIL_FIELD).send_keys(EMAIL)
-        driver.find_element(By.XPATH, LOGIN_PASSWORD_FIELD).send_keys(PASSWORD)
-        driver.find_element(By.CSS_SELECTOR, LOGIN_SUBMIT_BUTTON).click()
-        WebDriverWait(driver, 5).until(EC.url_to_be(f"{URL}/"))
-        assert driver.current_url == f"{URL}/"
-
-    def test_login_via_forgot_password_link(self, driver):
-        driver.get(f"{URL}/forgot-password")
-        driver.find_element(By.XPATH, FORGOT_PASSWORD_LOGIN_LINK).click()
-        driver.find_element(By.XPATH, LOGIN_EMAIL_FIELD).send_keys(EMAIL)
-        driver.find_element(By.XPATH, LOGIN_PASSWORD_FIELD).send_keys(PASSWORD)
-        driver.find_element(By.CSS_SELECTOR, LOGIN_SUBMIT_BUTTON).click()
-        WebDriverWait(driver, 5).until(EC.url_to_be(f"{URL}/"))
-        assert driver.current_url == f"{URL}/"
+def test_login_from_forgot_password_form(driver):
+    email, password = register_user(driver)
+    driver.get(FORGOT_PASSWORD_URL)
+    driver.find_element(*RegisterPageLocators.LOGIN_LINK).click()
+    login_user(driver, email, password)
+    WebDriverWait(driver, 10).until(
+        EC.url_to_be(BASE_URL + "/")
+    )
+    assert driver.current_url == BASE_URL + "/"
