@@ -6,27 +6,27 @@
 pip install -r requirements.txt
 
 ## Запуск
-pytest -v
+pytest tests/ -v
 
 ## Реализованные тесты
 
 ### Регистрация (test_registration.py)
-- test_register_success — успешная регистрация
-- test_register_invalid_password — ошибка при коротком пароле
+- test_successful_registration — успешная регистрация
+- test_registration_with_invalid_password — ошибка при коротком пароле
 
 ### Вход (test_login.py)
-- test_login_via_main_button — вход через кнопку "Войти в аккаунт"
-- test_login_via_personal_account — вход через "Личный кабинет"
-- test_login_via_register_link — вход через форму регистрации
-- test_login_via_forgot_password_link — вход через форму восстановления пароля
+- test_login_from_main_page — вход через кнопку "Войти в аккаунт"
+- test_login_from_personal_account — вход через "Личный кабинет"
+- test_login_from_registration_form — вход через форму регистрации
+- test_login_from_forgot_password_form — вход через форму восстановления пароля
 
-### Профиль (test_profile.py)
+### Личный кабинет (test_account.py)
 - test_go_to_personal_account — переход в личный кабинет
-- test_go_to_constructor_from_profile — переход в конструктор из кабинета
-- test_go_to_constructor_via_logo — переход в конструктор через логотип
-- test_logout — выход из аккаунта
+- test_go_from_account_to_constructor_by_constructor_button — переход в конструктор через кнопку
+- test_go_from_account_to_constructor_by_logo — переход в конструктор через логотип
+- test_logout_from_personal_account — выход из аккаунта
 
 ### Конструктор (test_constructor.py)
-- test_go_to_buns_section — переход к разделу "Булки"
 - test_go_to_sauces_section — переход к разделу "Соусы"
 - test_go_to_fillings_section — переход к разделу "Начинки"
+- test_go_to_buns_section — переход к разделу "Булки"
